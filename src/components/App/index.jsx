@@ -1,46 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { hot } from 'react-hot-loader/root';
+import { FaGlobeEurope } from 'react-icons/fa';
+import { getUserPosition, getSunriseSunset } from '../../helpers/geo';
+import { PageBody } from '../PageBody';
+import Container from '../Container';
+import Item from '../Item';
+import Section, { StyledH2 } from '../Section';
 import Button from '../Button';
 
 const App = () => {
-  const [postition, setPosition] = useState({
+  const [sun, setSun] = useState({ sunrise: 'Not Set', sunset: 'Not Set' });
+  const [position, setPosition] = useState({
     latitude: null,
     longitude: null,
   });
 
-  const parseLocation = (pos) => {
-    const { latitude, longitude } = pos.coords;
+  useEffect(() => {
+    if (!position.longitude || !position.longitude) return undefined;
 
-    setPosition({ latitude, longitude });
-  };
-
-  const handleGeoError = (e) => {
-    console.log('err', e);
-  };
+    getSunriseSunset(position).then(({ results: { sunrise, sunset } }) =>
+      setSun({ sunrise, sunset }),
+    );
+  }, [position]);
 
   const handleClick = (e) => {
     e.preventDefault();
-
-    if (!('geolocation' in navigator)) return false;
-
-    const opts = {
-      enableHighAccuracy: true,
-      maximumAge: 36000,
-      timout: 2700,
-    };
-
-    navigator.geolocation.getCurrentPosition(
-      parseLocation,
-      handleGeoError,
-      opts,
-    );
+    getUserPosition(({ coords }) => setPosition(coords));
   };
 
   return (
     <>
-      <h1>GeoIP Locator</h1>
-      <Button onClick={handleClick}>Click Me</Button>
-      {postition.latitude},{postition.longitude}
+      <PageBody />
+      <Button onClick={handleClick}>
+        <span>Get Location</span> <FaGlobeEurope />
+      </Button>
+      <Container>
+        <Item colour="sunrise">
+          <Section>
+            <StyledH2>Today's Sunrise is at:</StyledH2>
+            <p>{sun.sunrise}</p>
+          </Section>
+        </Item>
+        <Item colour="sunset">
+          <Section>
+            <StyledH2>Today's Sunset is at:</StyledH2>
+            <p>{sun.sunset}</p>
+          </Section>
+        </Item>
+      </Container>
     </>
   );
 };
