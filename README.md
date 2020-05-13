@@ -23,4 +23,4 @@ This has been deployed to **Github Pages**, at https://sun.rhys.cc. Service work
 - Get future times
 
 ## Google Lighthouse Audit
-
+<img src="https://i.imgur.com/h0ucpwu.png" />
