@@ -4,7 +4,7 @@
 
 This application gets a users current geographical position. With this position, the application will get the sunrise and sunset times at that given location.
 
-## Deployment
+## Deployment
 
 This has been deployed to **Github Pages**, at https://sun.rhys.cc
 
