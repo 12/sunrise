@@ -6,7 +6,7 @@ This application gets a users current geographical position. With this position,
 
 ## Deployment
 
-This has been deployed to **Github Pages**, at https://sun.rhys.cc
+This has been deployed to **Github Pages**, at https://sun.rhys.cc. Service worker available at https://sun.rhys.cc/sw.js, and manifest https://sun.rhys.cc/manifest.json.
 
 ## Technologies
 
@@ -14,4 +14,13 @@ This has been deployed to **Github Pages**, at https://sun.rhys.cc
 - Webpack
 - Babel
 - Styled Components
+
+## Want To Add
+
+- Relative time
+- - If sunrise has passed, display 'The sunrise _was_ at _x_'
+- Google Maps to allow user to select another location to get sunrise and sunset from
+- Get future times
+
+## Google Lighthouse Audit
 
