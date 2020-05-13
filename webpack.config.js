@@ -1,20 +1,23 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const webpack = require("webpack");
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+const { GenerateSW } = require('workbox-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = (env, argv) => {
-  const isDevelopment = argv.mode === "development";
+  const isDevelopment = argv.mode === 'development';
 
   return {
     entry: {
-      main: "./src/index.js",
+      main: './src/index.js',
     },
     output: {
-      path: path.join(__dirname, "/dist"),
-      filename: "[name].[hash].js",
+      path: path.join(__dirname, '/dist'),
+      filename: '[name].[hash].js',
     },
     mode: argv.mode,
-    devtool: isDevelopment ? "#eval-source-map" : "source-map",
+    devtool: isDevelopment ? '#eval-source-map' : 'source-map',
     devServer: {
       stats: {
         children: false,
@@ -28,18 +31,25 @@ module.exports = (env, argv) => {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
           use: {
-            loader: "babel-loader",
+            loader: 'babel-loader',
           },
         },
       ],
     },
     plugins: [
+      new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
-        template: "./index.html",
+        template: './index.html',
+      }),
+      new CopyPlugin([{ from: 'assets' }]),
+      new GenerateSW({
+        swDest: 'sw.js',
+        clientsClaim: true,
+        skipWaiting: true,
       }),
     ],
     resolve: {
-      extensions: [".js", ".jsx"],
+      extensions: ['.js', '.jsx'],
     },
   };
 };
