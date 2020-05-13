@@ -7,9 +7,11 @@ import Container from '../Container';
 import Item from '../Item';
 import Section, { StyledH2 } from '../Section';
 import Button from '../Button';
+import Footer from '../Footer';
 
 const App = () => {
   const [sun, setSun] = useState({ sunrise: 'Not Set', sunset: 'Not Set' });
+  const [lastFetched, setLastFetched] = useState(null);
   const [position, setPosition] = useState({
     latitude: null,
     longitude: null,
@@ -25,7 +27,14 @@ const App = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    getUserPosition(({ coords }) => setPosition(coords));
+    getUserPosition(
+      ({ coords, timestamp }) => {
+        setPosition(coords);
+        setLastFetched(timestamp);
+      },
+      () =>
+        setSun({ sunrise: 'There was an error', sunset: 'There was an error' }),
+    );
   };
 
   return (
@@ -47,6 +56,9 @@ const App = () => {
             <p>{sun.sunset}</p>
           </Section>
         </Item>
+        {lastFetched && (
+          <Footer>Last fetched: {new Date(lastFetched).toGMTString()}</Footer>
+        )}
       </Container>
     </>
   );

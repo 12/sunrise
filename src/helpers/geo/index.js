@@ -1,13 +1,9 @@
-const handleGeoError = (e) => {
-  console.log('err', e);
-};
-
 export const getSunriseSunset = ({ latitude, longitude }) => {
   const ssApiEndpoint = `https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}`;
   return fetch(ssApiEndpoint).then((res) => res.json());
 };
 
-export const getUserPosition = (cb) => {
+export const getUserPosition = (cb, err) => {
   if (!('geolocation' in navigator)) return false;
 
   const opts = {
@@ -16,5 +12,5 @@ export const getUserPosition = (cb) => {
     timout: 2700,
   };
 
-  navigator.geolocation.getCurrentPosition(cb, handleGeoError, opts);
+  navigator.geolocation.getCurrentPosition(cb, err, opts);
 };

@@ -42,11 +42,15 @@ module.exports = (env, argv) => {
         template: './index.html',
       }),
       new CopyPlugin([{ from: 'assets' }]),
-      new GenerateSW({
-        swDest: 'sw.js',
-        clientsClaim: true,
-        skipWaiting: true,
-      }),
+      ...(isDevelopment
+        ? []
+        : [
+            new GenerateSW({
+              swDest: 'sw.js',
+              clientsClaim: true,
+              skipWaiting: true,
+            }),
+          ]),
     ],
     resolve: {
       extensions: ['.js', '.jsx'],
